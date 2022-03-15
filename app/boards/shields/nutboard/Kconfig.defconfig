@@ -1,0 +1,16 @@
+if SHIELD_NUTBOARD_LEFT
+  config ZMK_KEYBOARD_NAME
+    default "Nutboard Left"
+  config ZMK_SPLIT_BLE_ROLE_CENTRAL
+    default y
+endif
+
+if SHIELD_NUTBOARD_RIGHT
+  config ZMK_KEYBOARD_NAME
+    default "Nutboard Right"
+endif
+
+if SHIELD_NUTBOARD_LEFT || SHIELD_NUTBOARD_RIGHT
+  config ZMK_SPLIT
+    default y
+endif

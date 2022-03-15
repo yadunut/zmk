@@ -1,0 +1,124 @@
+/*
+ * Copyright (c) 2020 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
+
+#define QWERTY 0
+#define COLEMAK 1
+#define RAISE  2
+#define LOWER  3
+#define ADJUST 4
+
+/ {
+  conditional_layers {
+    compatible = "zmk,conditional-layers";
+    tri_layer {
+      if-layers = <RAISE LOWER>;
+      then-layer = <ADJUST>;
+    };
+  };
+};
+
+/ {
+  keymap {
+    compatible = "zmk,keymap";
+
+    default_layer {
+      // Ref: https://zmkfirmware.dev/docs/codes/
+      // -------------------------------------------------------------------------------------------------------------------
+      // |   ~   |   1   |   2   |   3   |   4   |   5   |       | |       |   6   |   7   |   8   |   9   |   0   | NONE  |
+      // |  TAB  |   Q   |   W   |   E   |   R   |   T   |       | |       |   Y   |   U   |   I   |   O   |   P   | \     |
+      // |  ESC  |   A   |   S   |   D   |   F   |   G   |   [   | |   ]   |   H   |   J   |   K   |   L   |   ;   |   '   |
+      // | SHIFT |   Z   |   X   |   C   |   V   |   B   |       | |       |   N   |   M   |   ,   |   .   |   /   | RSHFT |
+      // | CLMAK |       |       | CTRL  |  CMD  |  ALT  | SPACE | | ENTER | BSPC  | RAISE | LOWER |       |       |       |
+      // -------------------------------------------------------------------------------------------------------------------
+
+      bindings = <
+        &kp GRAVE   &kp N1 &kp N2 &kp N3    &kp N4   &kp N5   &none     &none    &kp N6   &kp N7     &kp N8    &kp N9  &kp N0   &none     
+        &kp TAB     &kp Q  &kp W  &kp E     &kp R    &kp T    &none     &none    &kp Y    &kp U      &kp I     &kp O   &kp P    &kp BSLH  
+        &kp ESC     &kp A  &kp S  &kp D     &kp F    &kp G    &kp LBKT  &kp RBKT &kp H    &kp J      &kp K     &kp L   &kp SEMI &kp APOS  
+        &kp LSHFT   &kp Z  &kp X  &kp C     &kp V    &kp B    &none     &none    &kp N    &kp M      &kp COMMA &kp DOT &kp FSLH &kp RSHFT 
+        &to COLEMAK  &none  &none  &kp LCTRL &kp LGUI &kp LALT &kp SPACE &kp RET  &kp BSPC &mo RAISE &mo LOWER &none  &none    &none     
+        >;
+    };
+
+    colemak {
+      // Ref: https://zmkfirmware.dev/docs/codes/
+      // -------------------------------------------------------------------------------------------------------------------
+      // |   ~   |   1   |   2   |   3   |   4   |   5   |       | |       |   6   |   7   |   8   |   9   |   0   | NONE  |
+      // |  TAB  |   Q   |   W   |   F   |   P   |   B   |       | |       |   J   |   L   |   U   |   Y   |   ;   | NONE  |
+      // |  ESC  |   A   |   R   |   S   |   T   |   G   |   [   | |   ]   |   M   |   N   |   E   |   I   |   O   |   '   |
+      // | SHIFT |   Z   |   X   |   C   |   D   |   V   |       | |       |   K   |   H   |   ,   |   .   |   /   | RSHFT |
+      // | QWRTY |       |       | CTRL  |  CMD  |  ALT  | SPACE | | ENTER | BSPC  | RAISE | LOWER |       |       |       |
+      // -------------------------------------------------------------------------------------------------------------------
+
+      bindings = <
+        &kp GRAVE  &kp N1 &kp N2 &kp N3    &kp N4   &kp N5   &none     &none    &kp N6   &kp N7    &kp N8    &kp N9  &kp N0   &none     
+        &kp TAB    &kp Q  &kp W  &kp F     &kp P    &kp B    &none     &none    &kp J    &kp L     &kp U     &kp Y   &kp SEMI &none     
+        &kp ESC    &kp A  &kp R  &kp S     &kp T    &kp G    &kp LBKT  &kp RBKT &kp M    &kp N     &kp E     &kp I   &kp O    &kp APOS  
+        &kp LSHFT  &kp Z  &kp X  &kp C     &kp D    &kp V    &none     &none    &kp K    &kp H     &kp COMMA &kp DOT &kp FSLH &kp RSHFT 
+        &to QWERTY &none  &none  &kp LCTRL &kp LGUI &kp LALT &kp SPACE &kp RET  &kp BSPC &mo RAISE &mo LOWER &none  &none    &none     
+        >;
+    };
+
+    raise {
+      // -------------------------------------------------------------------------------------------------------------------
+      // |       |       |       |       |       |       |       | |       |       |       |       |       |       |       |
+      // |       |       |       |       |       |       |       | |       |       |       |       |       |       |       |
+      // |       |       |       |       |       |       |       | |       |       |   -   |   +   |       |       |       |
+      // |       |       |       |       |       |       |       | |       |       |       |       |       |       |       |
+      // |       |       |       |       |       |       |       | |       |       |       |       |       |       |       |
+      // -------------------------------------------------------------------------------------------------------------------
+
+      bindings = <
+        &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none
+        &trans     &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none
+        &trans     &none      &none      &none      &none      &none      &none      &none      &none      &kp MINUS  &kp EQUAL  &none      &none      &none
+        &trans     &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none
+        &trans     &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none
+        >;
+    };
+
+    lower {
+      // -------------------------------------------------------------------------------------------------------------------
+      // |       |       |       |       |       |       |       | |       |       |       |       |       |       |       |
+      // |       |       |       |       |       |       |       | |       |       |       |       |       |       |       |
+      // |       |       |       |       |       |       |       | |       |       | LEFT  | RIGHT |  UP   | DOWN  |       |
+      // |       |       |       |       |       |       |       | |       |       |       |       |       |       |       |
+      // |       |       |       |       |       |       |       | |       |       |       |       |       |       |       |
+      // -------------------------------------------------------------------------------------------------------------------
+      bindings = <
+        &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none
+        &trans     &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none
+        &trans     &none      &none      &none      &none      &none      &none      &none      &none      &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &none
+        &trans     &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none
+        &trans     &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none      &none
+        >;
+    };
+
+    adjust {
+      // -------------------------------------------------------------------------------------------------------------------
+      // |       |       |       |       |       |       |       | |  BLE  |  USB  | BL 0  | BL 1  | BL 2  | BL3   | BL 4  |
+      // |       |       |       |       |       |       |       | |       |       |       |       |       |       |       |
+      // |       |       |       |       |       |       |       | |       |       | LEFT  | RIGHT |  UP   | DOWN  |       |
+      // |       |       |       |       |       |       |       | |       |       |       |       |       |       |       |
+      // |       |       |       |       |       |       |       | |       |       |       |       |       |       |       |
+      // -------------------------------------------------------------------------------------------------------------------
+      bindings = <
+        &none      &none      &none      &none      &none      &none      &none      &out OUT_BLE &out OUT_USB &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4
+        &trans     &none      &none      &none      &none      &none      &none      &none        &none        &none        &none        &none        &none        &none
+        &trans     &none      &none      &none      &none      &none      &none      &none        &none        &none        &none        &none        &none        &none
+        &trans     &none      &none      &none      &none      &none      &none      &none        &none        &none        &none        &none        &none        &none
+        &trans     &none      &none      &none      &none      &none      &none      &none        &none        &none        &none        &none        &none        &none
+        >;
+    };
+
+  };
+};
+

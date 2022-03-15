@@ -1,0 +1,5 @@
+config SHIELD_NUTBOARD_LEFT
+	def_bool $(shields_list_contains,nutboard_left)
+config SHIELD_NUTBOARD_RIGHT
+	def_bool $(shields_list_contains,nutboard_right)
+

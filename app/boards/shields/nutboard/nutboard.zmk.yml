@@ -1,0 +1,12 @@
+file_format: "1"
+id: nutboard
+name: Nutboard
+type: shield
+url: https://afternoonlabs.com/breeze/
+requires:
+  - pro_micro
+features:
+  - keys
+siblings:
+  - nutboard_left
+  - nutboard_right
